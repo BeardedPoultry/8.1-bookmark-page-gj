@@ -1,3 +1,19 @@
+require.register("ajax-config", function(exports, require, module){
+  /*
+  If the url is to Parse, add the Parse headers
+*/
+'use strict';
+
+$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+  if (options.url.match(/api.parse.com/)) {
+    options.headers = options.headers || {};
+    options.headers['X-Parse-Application-Id'] = 'TPqr0wgzfLrceFqDWBztdRKjE1VCscgxAxyQmIbP';
+    options.headers['X-Parse-REST-API-Key'] = 'FKMwRtI6xyMSPv4BWfHQtYaCnjnHEnIRi6Ysrelk';
+  }
+});
+  
+});
+
 require.register("main", function(exports, require, module){
   'use strict';
 
@@ -7,16 +23,45 @@ var _viewsBookmarkList = require('./views/bookmark-list');
 
 var _viewsBookmarkList2 = _interopRequireDefault(_viewsBookmarkList);
 
+var _modelsBookmark = require('./models/bookmark');
+
+require('./ajax-config');
+
 (function () {
   'use strict';
 
   $(document).ready(function () {
-    var bookmarks = new Backbone.Collection([{ title: 'Google', url: 'http://google.com' }, { title: 'Twitter', url: 'http://twitter.com' }, { title: 'Cool', url: 'http://cool.com' }]);
-
+    var bookmarks = new _modelsBookmark.BookmarkCollection();
+    bookmarks.fetch();
     var listView = new _viewsBookmarkList2['default']({ collection: bookmarks });
     $('body').prepend(listView.el);
   });
 })();
+  
+});
+
+require.register("models/bookmark", function(exports, require, module){
+  "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var Bookmark = Backbone.Model.extend({
+  idAttribute: "objectId"
+});
+
+var BookmarkCollection = Backbone.Collection.extend({
+  url: "https://api.parse.com/1/classes/Bookmark",
+
+  model: Bookmark,
+
+  parse: function parse(response) {
+    return response.results;
+  }
+});
+
+exports["default"] = { Bookmark: Bookmark, BookmarkCollection: BookmarkCollection };
+module.exports = exports["default"];
   
 });
 
@@ -38,6 +83,7 @@ exports['default'] = Backbone.View.extend({
 
   initialize: function initialize() {
     this.render();
+    this.listenTo(this.model, 'change', this.render);
   },
 
   render: function render() {
@@ -52,7 +98,10 @@ exports['default'] = Backbone.View.extend({
     e.preventDefault();
     var title = this.$('.bookmark-title').val();
     var url = this.$('.bookmark-url').val();
-    console.log(title, url);
+    this.model.save({
+      title: title,
+      url: url
+    });
   }
 });
 module.exports = exports['default'];
@@ -78,6 +127,7 @@ exports['default'] = Backbone.View.extend({
 
   initialize: function initialize() {
     this.render();
+    this.listenTo(this.collection, 'update', this.render);
   },
 
   render: function render() {
