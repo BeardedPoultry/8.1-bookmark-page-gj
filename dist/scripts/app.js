@@ -1,19 +1,3 @@
-require.register("ajax-config", function(exports, require, module){
-  /*
-  If the url is to Parse, add the Parse headers
-*/
-'use strict';
-
-$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-  if (options.url.match(/api.parse.com/)) {
-    options.headers = options.headers || {};
-    options.headers['X-Parse-Application-Id'] = 'TPqr0wgzfLrceFqDWBztdRKjE1VCscgxAxyQmIbP';
-    options.headers['X-Parse-REST-API-Key'] = 'FKMwRtI6xyMSPv4BWfHQtYaCnjnHEnIRi6Ysrelk';
-  }
-});
-  
-});
-
 require.register("main", function(exports, require, module){
   'use strict';
 
@@ -51,7 +35,7 @@ var Bookmark = Backbone.Model.extend({
 });
 
 var BookmarkCollection = Backbone.Collection.extend({
-  url: "https://api.parse.com/1/classes/Bookmark",
+  url: "https://api.parse.com/1/classes/link",
 
   model: Bookmark,
 

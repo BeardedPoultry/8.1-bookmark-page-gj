@@ -1,21 +1,23 @@
 @import '../bower_components/bourbon/app/assets/stylesheets/bourbon';
 @import '../bower_components/neat/app/assets/stylesheets/neat';
 
-// Typography
-$base-font-family: $helvetica;
-
-// Colors
-$blue: #477dca;
-$dark-gray: #333;
-$medium-gray: #999;
-$light-gray: #ddd;
-$very-light-gray: #fafafa;
-
-$base-font-color: $dark-gray;
-$base-background-color: $very-light-gray;
-
+header {
+	margin-top: 0;
+	border-bottom-style: dashed;
+	width: 100;
+	color: lightgray;
+}
+button {
+	color: black;
+}
 body {
-  font-family: $base-font-family;
-  background-color: $base-background-color;
-  color: $base-font-color;
+	margin-top: 0;
+	margin-left: 10%;
+	margin-right: 10%;
+	background-image: "img/corkboard.jpg";
+}
+
+.website-links {
+	width: 50%;
+	height: 100%;
 }
