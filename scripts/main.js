@@ -10,6 +10,6 @@ import './ajax-config';
     var bookmarks = new BookmarkCollection();
     bookmarks.fetch();
     var listView = new BookmarkListView({collection: bookmarks});
-    $('body').prepend(listView.el);
+    $('body').append(listView.el);
   });
 })();

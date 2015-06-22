@@ -1,3 +1,19 @@
+require.register("ajax-config", function(exports, require, module){
+  /*
+  If the url is to Parse, add the Parse headers
+*/
+'use strict';
+
+$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+  if (options.url.match(/api.parse.com/)) {
+    options.headers = options.headers || {};
+    options.headers['X-Parse-Application-Id'] = 'BJPMxxymMUpqvEVllLfI1S8CVkozHRfjWKDG52nA';
+    options.headers['X-Parse-REST-API-Key'] = 'GwSQiqrl8FwPkVK5HAYurfWsnPgLC58a73q9K3yg';
+  }
+});
+  
+});
+
 require.register("main", function(exports, require, module){
   'use strict';
 
@@ -18,7 +34,7 @@ require('./ajax-config');
     var bookmarks = new _modelsBookmark.BookmarkCollection();
     bookmarks.fetch();
     var listView = new _viewsBookmarkList2['default']({ collection: bookmarks });
-    $('body').prepend(listView.el);
+    $('body').append(listView.el);
   });
 })();
   
